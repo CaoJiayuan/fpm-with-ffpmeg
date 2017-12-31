@@ -4,7 +4,7 @@
 #
 #
 
-FROM       registry.cn-hangzhou.aliyuncs.com/0x01301c74/php-fpm-slim
+FROM       registry.cn-hangzhou.aliyuncs.com/0x01301c74/php-fpm-slim AS base
 
 RUN     apk  add --no-cache --update libgcc libstdc++ ca-certificates libcrypto1.0 libssl1.0 libgomp expat
 
@@ -216,7 +216,7 @@ RUN  \
         DIR=/tmp/freetype && \
         mkdir -p ${DIR} && \
         cd ${DIR} && \
-        curl -sLO http://download.savannah.gnu.org/releases/freetype/freetype-${FREETYPE_VERSION}.tar.gz && \
+        curl -sLO https://jaist.dl.sourceforge.net/project/freetype/freetype2/${FREETYPE_VERSION}/freetype-${FREETYPE_VERSION}.tar.gz && \
         echo ${FREETYPE_SHA256SUM} | sha256sum --check && \
         tar -zx --strip-components=1 -f freetype-${FREETYPE_VERSION}.tar.gz && \
         ./configure --prefix="${PREFIX}" --disable-static --enable-shared && \
@@ -325,4 +325,4 @@ RUN \
     cp -r ${PREFIX}/share/ffmpeg /usr/local/share/ && \
     LD_LIBRARY_PATH=/usr/local/lib ffmpeg -buildconf
 
-COPY --from=build /usr/local /usr/local
+COPY --from=base /usr/local /usr/local
