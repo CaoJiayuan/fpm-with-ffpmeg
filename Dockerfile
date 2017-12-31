@@ -45,6 +45,9 @@ ENV PHP_VERSION 7.2.0
 ENV PHP_URL="https://secure.php.net/get/php-7.2.0.tar.xz/from/this/mirror" PHP_ASC_URL="https://secure.php.net/get/php-7.2.0.tar.xz.asc/from/this/mirror"
 ENV PHP_SHA256="87572a6b924670a5d4aac276aaa4a94321936283df391d702c845ffc112db095" PHP_MD5=""
 WORKDIR /var/www/html
+COPY docker-php-source /usr/local/bin/
+COPY docker-php-ext-* docker-php-entrypoint /usr/local/bin/
+
 COPY ./install-fpm.sh /install-fpm.sh 
 
 RUN chmod +x /install-fpm.sh && /install-fpm.sh
